@@ -14,7 +14,6 @@ Support :
 
 ## Composer
 
-
 This plugin on the Packagist.
 
 [https://packagist.org/packages/thinknet/request](https://packagist.org/packages/thinknet/request)
@@ -36,27 +35,37 @@ You'll then need to run composer install to download it and have the autoloader 
 Once Theme is installed you need to register the service provider with the application. Open up config/app.php and find the providers key.
 
 ```php
+
 'providers' => array(
 
     'Thinknet\Request\RequestServiceProvider'
 
 )
+
 ```
 You can register the facade in the aliases key of your config/app.php file.
 
 ```php
+
 'aliases' => array(
 
     'ThinknetService' => 'Thinknet\Request\Service'
 
 )
+
+```
+
+You can set Url on .env file
+
+```php
+
+SERVICE_BASE_URL=http://www.example.com
+
 ```
 
 ## Usage
 
 API ThinknetService Requests format.
-
-Setting Uri in Construct
 
 ```php
 
@@ -71,14 +80,6 @@ class ServiceController extends Controller
         $this->service = $service;
     }
 }
-
-```
-
-OR Set Url on .env file
-
-```php
-
-SERVICE_BASE_URL = http://www.example.com
 
 ```
 
