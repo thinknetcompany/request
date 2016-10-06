@@ -17,16 +17,16 @@ Support :
 
 This plugin on the Packagist.
 
-[https://packagist.org/packages/thinknet/service](https://packagist.org/packages/thinknet/service)
+[https://packagist.org/packages/thinknet/request](https://packagist.org/packages/thinknet/request)
 
-Install the latest version with composer require thinknet/service
+Install the latest version with composer require thinknet/request
 
 
 To get the lastest version of Theme simply require it in your composer.json file.
 
 ```php
 
-    "thinknet/service": "dev-master"
+    "thinknet/request": "dev-master"
 
 ```
 
@@ -66,7 +66,7 @@ class ServiceController extends Controller
 {
     protected $service;
 
-    public function __construct(ResumeService $service)
+    public function __construct(Service $service)
     {
         $this->service = $service;
     }
