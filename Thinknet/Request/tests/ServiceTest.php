@@ -10,13 +10,13 @@ require_once('vendor/guzzlehttp/guzzle/src/Exception/RequestException.php');
 
 class ServiceTest extends PHPUnit_Framework_TestCase
 {
-    public function testGet()
-    {
+    protected $service;
+    protected $expectedBody;
+
+    public function setup() {
         $baseUri = 'http://api.com/';
-        $params  = ['params' => 'value'];
-        $result  = ['result' => 'value'];
-        $expectedResult  = json_decode(json_encode($result));
-        $expectedOptions = ['query' => $params];
+        $result  = ['foo' => 'bar'];
+        $this->expectedBody = json_decode(json_encode($result));
 
         $mock = new \GuzzleHttp\Handler\MockHandler([
             new \GuzzleHttp\Psr7\Response(200, [], json_encode($result)),
@@ -24,24 +24,45 @@ class ServiceTest extends PHPUnit_Framework_TestCase
         ]);
 
         $handler = \GuzzleHttp\HandlerStack::create($mock);
-        $client = new \GuzzleHttp\Client(['handler' => $handler]);
+        $client  = new \GuzzleHttp\Client(['handler' => $handler]);
 
-        $service = new Thinknet\Request\Service($baseUri);
-        $reflaction = new ReflectionClass($service);
+        $this->service = new Thinknet\Request\Service($baseUri);
+        $reflaction    = new ReflectionClass($this->service);
 
         $reflectionClient = $reflaction->getProperty('client');
         $reflectionClient->setAccessible(true);
-        $reflectionClient->setValue($service, $client);
+        $reflectionClient->setValue($this->service, $client);
+    }
 
-        $reflectionOptions = $reflaction->getProperty('options');
-        $reflectionOptions->setAccessible(true);
+    public function testGet()
+    {
+        $this->service->get('foo');
 
-        $actualResult = $service->get('banners', $params)
-                          ->getResult();
+        $this->assertEquals($this->expectedBody, $this->service->getResult());
+        $this->assertEquals(200, $this->service->getHttpCode());
+    }
 
-        $actualOptions = $reflectionOptions->getValue($service);
+    public function testPost()
+    {
+        $this->service->post('foo');
 
-        $this->assertEquals($expectedResult, $actualResult);
-        $this->assertEquals($expectedOptions, $actualOptions);
+        $this->assertEquals($this->expectedBody, $this->service->getResult());
+        $this->assertEquals(200, $this->service->getHttpCode());
+    }
+
+    public function testPut()
+    {
+        $this->service->put('foo');
+
+        $this->assertEquals($this->expectedBody, $this->service->getResult());
+        $this->assertEquals(200, $this->service->getHttpCode());
+    }
+
+    public function testDelete()
+    {
+        $this->service->delete('foo');
+
+        $this->assertEquals($this->expectedBody, $this->service->getResult());
+        $this->assertEquals(200, $this->service->getHttpCode());
     }
 }
