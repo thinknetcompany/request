@@ -56,6 +56,7 @@ class Service
             $this->response = null;
             $this->errorResponse = $e->getResponse();
             $this->httpCode = $this->errorResponse->getStatusCode();
+
         }
 
         return $this;
