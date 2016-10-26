@@ -52,11 +52,10 @@ class Service
             $this->response = $this->client->request($method, $url, $this->options);
             $this->errorResponse = null;
             $this->httpCode = $this->response->getStatusCode();
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             $this->response = null;
             $this->errorResponse = $e->getResponse();
             $this->httpCode = $this->errorResponse->getStatusCode();
-
         }
 
         return $this;
